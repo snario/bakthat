@@ -72,7 +72,7 @@ class S3Backend(BakthatBackend):
         # Allow for AWS environments with roles to use bakthat
         if self.conf["access_key"] == "" and self.conf["secret_key"] == "":
             con = boto.connect_s3()
-        else
+        else:
             con = boto.connect_s3(self.conf["access_key"], self.conf["secret_key"])
 
         region_name = self.conf["region_name"]
