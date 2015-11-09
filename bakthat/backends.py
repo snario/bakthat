@@ -69,7 +69,11 @@ class S3Backend(BakthatBackend):
     def __init__(self, conf={}, profile="default"):
         BakthatBackend.__init__(self, conf, profile)
 
-        con = boto.connect_s3(self.conf["access_key"], self.conf["secret_key"])
+        # Allow for AWS environments with roles to use bakthat
+        if self.conf["access_key"] == "" and self.conf["secret_key"] == "":
+            con = boto.connect_s3()
+        else
+            con = boto.connect_s3(self.conf["access_key"], self.conf["secret_key"])
 
         region_name = self.conf["region_name"]
         if region_name == DEFAULT_LOCATION:
