@@ -128,7 +128,17 @@ class GlacierBackend(BakthatBackend):
     def __init__(self, conf={}, profile="default"):
         BakthatBackend.__init__(self, conf, profile)
 
-        con = boto.connect_glacier(aws_access_key_id=self.conf["access_key"], aws_secret_access_key=self.conf["secret_key"], region_name=self.conf["region_name"])
+        # Allow for AWS environments with roles to use bakthat
+        if self.conf["access_key"] == "" and self.conf["secret_key"] == "":
+            con = boto.connect_glacier(
+                region_name=self.conf["region_name"]
+            )
+        else:
+            con = boto.connect_glacier(
+                aws_access_key_id=self.conf["access_key"],
+                aws_secret_access_key=self.conf["secret_key"],
+                region_name=self.conf["region_name"]
+            )
 
         self.vault = con.create_vault(self.conf["glacier_vault"])
         self.backup_key = "bakthat_glacier_inventory"
