@@ -141,6 +141,7 @@ class GlacierBackend(BakthatBackend):
             )
 
         self.vault = con.create_vault(self.conf["glacier_vault"])
+        self.vault.name = str(self.vault.name)  #  https://github.com/boto/boto/issues/3318
         self.backup_key = "bakthat_glacier_inventory"
         self.container = self.conf["glacier_vault"]
         self.container_key = "glacier_vault"
